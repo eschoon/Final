@@ -103,5 +103,3 @@ legend.addTo(map);
 
       console.log(customLayer)
 
-  var language = new MapboxLanguage({defaultLanguage : "en"})    
-  map.addControl(language)
