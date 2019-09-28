@@ -1,8 +1,24 @@
-var map = L.map('divmap').setView([24, 121], 13);
- 
+var map = L.map('map', {
+    center: [24.98298
+      , 121.54024
+    ], 
+    zoom: 12
+  });
+
+  // map.on('load', function() {
+  //   map.setLayoutProperty('country-label', 'text-field', ['format',
+  //   ['get', 'name_en'], { 'font-scale': 1.2 },
+  //   '\n', {},
+  //   ['get', 'name'], {
+  //   'font-scale': 0.8,
+  //   'text-font': ['literal', [ 'DIN Offc Pro Italic', 'Arial Unicode MS Regular' ]]
+  //   }
+  //   ]);
+     
+    }); 
   L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
     attribution: "Map data &copy; <a href='https://www.openstreetmap.org/'>OpenStreetMap</a> contributors, <a href='https://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, Imagery © <a href='https://www.mapbox.com/'>Mapbox</a>",
-    maxZoom: 19,
+    maxZoom: 18,
     id: "mapbox.streets",
     accessToken: API_KEY
   }).addTo(map);
@@ -33,10 +49,10 @@ function getColor(d) {
   var customLayer = L.geoJson(null, {
     onEachFeature: function(feature, layer) {
       layer.bindPopup("Date of Home Sale: " + feature.properties.transaction_date +
-      "<br>Price of House Per Unit ($): " + (feature.properties.house_price_unit) + 
-      "<br>Age of House (Years): " + (feature.properties.house_age) + 
-      "<br>Distance to MRT Train (Meters): " + (feature.properties.dist_to_mrt) + 
-      "<br>Number of Convenience Stores: " + (feature.properties.no_conv_stores) + "</br>")
+      "<br>House Price of Unit Area (10000 New Taiwan Dollar/Ping)" + (feature.properties.house_price_unit) + 
+      "<br>Age of House (Years) " + (feature.properties.house_age) + 
+      "<br>Distance Nearest MRT Station (meter) " + (feature.properties.dist_to_mrt) + 
+      "<br>Number of Convenience Stores in Living Circle: " + (feature.properties.no_conv_stores) + "</br>")
       },
       pointToLayer: function (feature, latlng) {
         return L.circleMarker(latlng, geojsonMarkerOptions(feature)
