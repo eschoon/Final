@@ -49,7 +49,7 @@ function getColor(d) {
   var customLayer = L.geoJson(null, {
     onEachFeature: function(feature, layer) {
       layer.bindPopup("Date of Home Sale: " + feature.properties.transaction_date +
-      "<br>House Price of Unit Area (10000 New Taiwan Dollar/Ping)" + (feature.properties.house_price_unit) + 
+      "<br>House Price of Unit Area: " + (feature.properties.house_price_unit) + 
       "<br>Age of House (Years) " + (feature.properties.house_age) + 
       "<br>Distance Nearest MRT Station (meter) " + (feature.properties.dist_to_mrt) + 
       "<br>Number of Convenience Stores in Living Circle: " + (feature.properties.no_conv_stores) + "</br>")
