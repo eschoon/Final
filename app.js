@@ -51,8 +51,8 @@ function getColor(d) {
       layer.bindPopup("Date of Home Sale: " + feature.properties.transaction_date +
       "<br>House Price of Unit Area: " + (feature.properties.house_price_unit) + 
       "<br>Age of House (Years) " + (feature.properties.house_age) + 
-      "<br>Distance Nearest MRT Station (meter) " + (feature.properties.dist_to_mrt) + 
-      "<br>Number of Convenience Stores in Living Circle: " + (feature.properties.no_conv_stores) + "</br>")
+      "<br>Nearest MRT Station (meter) " + (feature.properties.dist_to_mrt) + 
+      "<br>Number of Convenience Stores: " + (feature.properties.no_conv_stores) + "</br>")
       },
       pointToLayer: function (feature, latlng) {
         return L.circleMarker(latlng, geojsonMarkerOptions(feature)
@@ -69,7 +69,7 @@ legend.onAdd = function (map) {
   var div = L.DomUtil.create('div', 'info legend'),
   
 		grades = [10,20,30,40,50,60]
-		labels = ['<strong> Price Per Unit ($) </strong><br></br>'];
+		labels = ['<strong> Price Per Unit </strong><br></br>'];
 
 	// loop through our density intervals and generate a label with a colored square for each interval
 	for (var i = 0; i < grades.length; i++) {
