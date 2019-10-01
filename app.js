@@ -1,29 +1,42 @@
-var map = L.map('map', {
-    center: [24.98298
-      , 121.54024
-    ], 
-    zoom: 12
-  });
+var token = 'pk.eyJ1IjoiZXNjaG9vbm0iLCJhIjoiY2p6Zm1sa3drMGN5bzNibzNiZmR5eTJ0cSJ9.Sl2EryUH0F0jT9RJkhFWcQ';
+mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js');
+ 
 
-  // map.on('load', function() {
-  //   map.setLayoutProperty('country-label', 'text-field', ['format',
-  //   ['get', 'name_en'], { 'font-scale': 1.2 },
-  //   '\n', {},
-  //   ['get', 'name'], {
-  //   'font-scale': 0.8,
-  //   'text-font': ['literal', [ 'DIN Offc Pro Italic', 'Arial Unicode MS Regular' ]]
-  //   }
-  //   ]);
-     
-    // }); 
-  L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
+
+var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
+    center: [9.49, 49.01], // starting position [lng, lat]
+    zoom: 4 // starting zoom
+    });
+    map.on('load', function() {
+        map.setLayoutProperty('country-label', 'text-field', ['format',
+        ['get', 'name_en'], { 'font-scale': 1.2 },
+        '\n', {},
+        ['get', 'name'], {
+        'font-scale': 0.8,
+        'text-font': ['literal', [ 'DIN Offc Pro Italic', 'Arial Unicode MS Regular' ]]
+        }
+        ]);
+         
+        });    
+ 
+  L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={mapboxgl.accessToken}", {
     attribution: "Map data &copy; <a href='https://www.openstreetmap.org/'>OpenStreetMap</a> contributors, <a href='https://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, Imagery © <a href='https://www.mapbox.com/'>Mapbox</a>",
     maxZoom: 18,
     id: "mapbox.streets",
-    accessToken: API_KEY
+    accessToken: mapboxgl.API_KEY
   }).addTo(map);
   
- 
+  var baseLayers = {
+    "Mapbox": mapbox,
+    "OpenStreetMap": osm
+};
+var overlays = {
+    "Marker": marker,
+    "Roads": roadsLayer
+};
+L.control.layers(baseLayers, overlays).addTo(map);
 
 function getColor(d) {
 	return d >= 60 ? 'red' :
@@ -49,10 +62,10 @@ function getColor(d) {
   var customLayer = L.geoJson(null, {
     onEachFeature: function(feature, layer) {
       layer.bindPopup("Date of Home Sale: " + feature.properties.transaction_date +
-      "<br>House Price of Unit Area: " + (feature.properties.house_price_unit) + 
+      "<br>Price of House Per Unit " + (feature.properties.house_price_unit) + 
       "<br>Age of House (Years) " + (feature.properties.house_age) + 
-      "<br>Distance Nearest MRT Station (meter) " + (feature.properties.dist_to_mrt) + 
-      "<br>Number of Convenience Stores in Living Circle: " + (feature.properties.no_conv_stores) + "</br>")
+      "<br>Distance to MRT (Meters) " + (feature.properties.dist_to_mrt) + 
+      "<br>Number of Convenience Stores: " + (feature.properties.no_conv_stores) + "</br>")
       },
       pointToLayer: function (feature, latlng) {
         return L.circleMarker(latlng, geojsonMarkerOptions(feature)
@@ -69,7 +82,7 @@ legend.onAdd = function (map) {
   var div = L.DomUtil.create('div', 'info legend'),
   
 		grades = [10,20,30,40,50,60]
-		labels = ['<strong> Price Per Unit ($) </strong><br></br>'];
+		labels = ['<strong> Price Per Unit </strong><br></br>'];
 
 	// loop through our density intervals and generate a label with a colored square for each interval
 	for (var i = 0; i < grades.length; i++) {
@@ -103,3 +116,5 @@ legend.addTo(map);
 
       console.log(customLayer)
 
+  var language = new MapboxLanguage({defaultLanguage : "en"})    
+  map.addControl(language)
